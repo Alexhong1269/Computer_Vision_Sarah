@@ -11,6 +11,7 @@ def main():
 
     while True:
         success, frame = cap.read()
+        gesture_detector = SingleHandGestures()
 
         if not success:
             break
