@@ -1,5 +1,6 @@
 import cv2
 from core.hand_tracker import HandTracker
+from gestures.single_hand import SingleHandGestures
 
 def main():
     tracker = HandTracker(detection_confidence=0.5)
@@ -16,6 +17,15 @@ def main():
         frame = cv2.flip(frame, 1) #mirror image
         results = tracker.process_frame(frame)
         frame = tracker.draw_landmarks(frame, results)
+
+        if results.multi_hand_landmarks:
+            for hand_landmarks in results.multi_hand_landmarks:
+                gesture = gesture_detector.detect_gesture(hand_landmarks)
+                if gesture:
+                    cv2.putText(
+                        frame, gesture(50, 50),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 3
+                    )
 
         cv2.imshow("Hand Tracker Test", frame)
 
