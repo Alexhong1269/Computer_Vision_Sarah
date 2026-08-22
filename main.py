@@ -24,7 +24,7 @@ def main():
                 gesture = gesture_detector.detect_gesture(hand_landmarks)
                 if gesture:
                     cv2.putText(
-                        frame, gesture(50, 50),
+                        frame, gesture, (50, 50),
                         cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 3
                     )
 

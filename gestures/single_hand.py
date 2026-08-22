@@ -40,7 +40,7 @@ class SingleHandGestures:
     #gesture matching
     def is_fist(self, hand_landmarks):
         states = self.get_finger_states(hand_landmarks)
-        return not any(state.values())
+        return not any(states.values())
     
     def is_open_palm(self, hand_landmarks):
         states = self.get_finger_states(hand_landmarks)
