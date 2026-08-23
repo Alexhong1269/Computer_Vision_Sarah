@@ -30,7 +30,7 @@ class SingleHandGestures:
         base_to_index = self._distance(thumb_mcp, index_mcp)
 
         #return
-        return tip_to_index > base_to_index * 1.3
+        return tip_to_index > base_to_index * .6
 
 
     #checking to see if the distance of the tip to wrist is larger meaning finger is extended

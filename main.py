@@ -22,6 +22,8 @@ def main():
         if results.multi_hand_landmarks:
             for hand_landmarks in results.multi_hand_landmarks:
                 gesture = gesture_detector.detect_gesture(hand_landmarks)
+                #print check
+                #print(gesture_detector.get_finger_states(hand_landmarks))
                 if gesture:
                     cv2.putText(
                         frame, gesture, (50, 50),
