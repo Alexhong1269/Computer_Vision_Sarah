@@ -16,8 +16,22 @@ class SingleHandGestures:
     WRIST = 0
 
     @staticmethod
-    def _distance_from_wrist(landmark, wrist):
-        return ((landmark.x - wrist.x) ** 2 + (landmark.y - wrist.y) ** 2) ** .05
+    #help with 
+    def _distance(landmark_a, landmark_b):
+        return ((landmark_a.x - landmark_b. x) ** 2 + (landmark_a.y - landmark_b.y) ** 2) ** 0.5
+    
+    #thumb checker
+    def _is_thumb_extended(self, hand_landmarks):
+        thumb_tip = hand_landmarks.landmark[4]
+        thumb_mcp = hand_landmarks.landmark[2]
+        index_mcp = hand_landmarks.landmark[5]
+
+        tip_to_index = self._distance(thumb_tip, index_mcp)
+        base_to_index = self._distance(thumb_mcp, index_mcp)
+
+        #return
+        return tip_to_index > base_to_index * 1.3
+
 
     #checking to see if the distance of the tip to wrist is larger meaning finger is extended
     def _is_finger_extended(self, hand_landmarks, finger_name):
@@ -25,17 +39,20 @@ class SingleHandGestures:
         tip = hand_landmarks.landmark[self.FINGER_TIPS[finger_name]]
         joint = hand_landmarks.landmark[self.FINGER_JOINTS[finger_name]]
 
-        tip_distance = self._distance_from_wrist(tip, wrist)
-        joint_distance = self._distance_from_wrist(joint, wrist)
+        tip_distance = self._distance(tip, wrist)
+        joint_distance = self._distance(joint, wrist)
 
         return tip_distance > joint_distance
 
     def get_finger_states(self, hand_landmarks):
-        #gives us a list of the finger state
-        return {
-            finger: self._is_finger_extended(hand_landmarks, finger)
-            for finger in self.FINGER_TIPS
-        }
+        states = {}
+
+        for finger in self.FINGER_TIPS:
+            if finger == "thumb":
+                states[finger] = self._is_thumb_extended(hand_landmarks)
+            else:
+                states[finger] = self._is_finger_extended(hand_landmarks, finger)
+        return states
     
     #gesture matching
     def is_fist(self, hand_landmarks):
