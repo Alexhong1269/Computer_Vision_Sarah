@@ -1,6 +1,7 @@
 import cv2
 from core.hand_tracker import HandTracker
 from gestures.single_hand import SingleHandGestures
+from gestures.heart import HeartGesture
 
 def main():
     tracker = HandTracker(detection_confidence=0.5)
@@ -12,6 +13,7 @@ def main():
     while True:
         success, frame = cap.read()
         gesture_detector = SingleHandGestures()
+        heart_detector = HeartGesture()
 
         if not success:
             break
@@ -29,6 +31,13 @@ def main():
                         frame, gesture, (50, 50),
                         cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 3
                     )
+        
+            if heart_detector.is_heart_gesture(results.multi_hand_landmarks, results.multi_handedness):
+                cv2.putText(
+                    frame, "Heart <3", (50, 150),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0,0,255), 3
+                )
+
 
         cv2.imshow("Hand Tracker Test", frame)
 
