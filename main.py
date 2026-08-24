@@ -4,6 +4,9 @@ from gestures.single_hand import SingleHandGestures
 from gestures.heart import HeartGesture
 
 def main():
+    gesture_detector = SingleHandGestures()
+    heart_detector = HeartGesture()
+
     tracker = HandTracker(detection_confidence=0.5)
     cap = cv2.VideoCapture(0) # 0 = default webcam
     cv2.namedWindow("Hand Tracker Test", cv2.WINDOW_NORMAL)
@@ -12,8 +15,6 @@ def main():
 
     while True:
         success, frame = cap.read()
-        gesture_detector = SingleHandGestures()
-        heart_detector = HeartGesture()
 
         if not success:
             break
@@ -22,21 +23,26 @@ def main():
         frame = tracker.draw_landmarks(frame, results)
 
         if results.multi_hand_landmarks:
-            for hand_landmarks in results.multi_hand_landmarks:
-                gesture = gesture_detector.detect_gesture(hand_landmarks)
-                #print check
-                #print(gesture_detector.get_finger_states(hand_landmarks))
-                if gesture:
-                    cv2.putText(
-                        frame, gesture, (50, 50),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 3
-                    )
-        
-            if heart_detector.is_heart_gesture(results.multi_hand_landmarks, results.multi_handedness):
-                cv2.putText(
-                    frame, "Heart <3", (50, 150),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0,0,255), 3
+            is_heart = False
+            if len(results.multi_hand_landmarks) == 2:
+                is_heart = heart_detector.is_heart_gesture(
+                    results.multi_hand_landmarks, results.multi_handedness
                 )
+            if is_heart:
+                cv2.putText(
+                    frame, "Heart <3", (50, 50),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 0, 255), 3
+                )
+        
+            else:
+                for hand_landmarks in results.multi_hand_landmarks:
+                    gesture = gesture_detector.detect_gesture(hand_landmarks)
+                    if gesture:
+                        cv2.putText(
+                            frame, gesture, (50,50),
+                            cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 3
+                        )
+
 
 
         cv2.imshow("Hand Tracker Test", frame)
@@ -49,4 +55,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-        
