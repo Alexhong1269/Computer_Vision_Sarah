@@ -2,10 +2,12 @@ import cv2
 from core.hand_tracker import HandTracker
 from gestures.single_hand import SingleHandGestures
 from gestures.heart import HeartGesture
+from core.state_manager import GestureStateManager
 
 def main():
     gesture_detector = SingleHandGestures()
     heart_detector = HeartGesture()
+    state_manager = GestureStateManager(debounce_frames=5)
 
     tracker = HandTracker(detection_confidence=0.5)
     cap = cv2.VideoCapture(0) # 0 = default webcam
@@ -36,10 +38,11 @@ def main():
         
             else:
                 for hand_landmarks in results.multi_hand_landmarks:
-                    gesture = gesture_detector.detect_gesture(hand_landmarks)
-                    if gesture:
+                    raw_gesture = gesture_detector.detect_gesture(hand_landmarks)
+                    confirmed = state_manager.update(raw_gesture)
+                    if confirmed:
                         cv2.putText(
-                            frame, gesture, (50,50),
+                            frame, confirmed, (50,50),
                             cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 3
                         )
 
