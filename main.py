@@ -1,4 +1,5 @@
 import cv2
+import random
 from core.hand_tracker import HandTracker
 from gestures.single_hand import SingleHandGestures
 from gestures.heart import HeartGesture
@@ -64,17 +65,33 @@ def main():
                 )
         
             else:
+                heart_state_manager.update(None)
+
                 for hand_landmarks in results.multi_hand_landmarks:
                     raw_gesture = gesture_detector.detect_gesture(hand_landmarks)
                     confirmed = state_manager.update(raw_gesture)
+
+                    wrist = hand_landmarks.landmark[0]
+                    x = int(wrist.x * frame_width)
+                    y = int(wrist.y * frame_height)
+                    
+                    if confirmed == "Fist" and state_manager.can_trigger():
+                        particle_system.emit_laser_burst(x, y)
+                        state_manager.trigger()
+                    elif confirmed == "Peace Sign" and state_manager.can_trigger():
+                        color = random.choice(CONFETTI_COLORS)
+                        particle_system.emit(x, y, color, count=40)
+                        state_manager.trigger()
+
                     if confirmed:
                         cv2.putText(
                             frame, confirmed, (50,50),
                             cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 3
                         )
 
-
-
+        particle_system.update()
+        particle_system.draw(frame)
+        
         cv2.imshow("Hand Tracker Test", frame)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):

@@ -60,7 +60,7 @@ class ParticleSystem:
     
     #drawing all the particles
     def draw(self, frame):
-        for particle in self.partilces:
+        for particle in self.particles:
             particle.draw(frame)
         for laser in self.lasers:
             laser.draw(frame)
