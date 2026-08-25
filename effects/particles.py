@@ -1,9 +1,10 @@
 import random
 import cv2
 import math
+import colorsys
 
 class Particle:
-    def __init__(self, x, y):
+    def __init__(self, x, y, color):
         #x and y are the current particles on the screen
         self.x = x
         self.y = y
@@ -65,7 +66,7 @@ class ParticleSystem:
             laser.draw(frame)
     
     #laser effect
-    def emit_laster_burst(self, x, y, color, count=16):
+    def emit_laster_burst(self, x, y, count=16):
         for i in range(count):
             angle = (2 * math.pi / count) * i
             hue = i / count
