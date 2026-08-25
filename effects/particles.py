@@ -39,6 +39,8 @@ class ParticleSystem:
     def __init__(self):
         #holding every current live particle
         self.particles = []
+        #all live lasers
+        self.lasers = []
     
     #spawing partilces when the gesture is called
     def emit(self, x, y, color, count=30):
@@ -50,16 +52,25 @@ class ParticleSystem:
         for particle in self.particles:
             particle.update()
         self.particles = [p for p in self.partilces if p.is_alive()]
+
+        for laser in self.lasers:
+            laser.update()
+        self.lasers = [l for l in self.lasers if l.is_alive()]
     
     #drawing all the particles
     def draw(self, frame):
         for particle in self.partilces:
             particle.draw(frame)
+        for laser in self.lasers:
+            laser.draw(frame)
     
     #laser effect
     def emit_laster_burst(self, x, y, color, count=16):
         for i in range(count):
             angle = (2 * math.pi / count) * i
+            hue = i / count
+            r, g, b = colorsys.hsv_to_rgb(hue, 1, 1)
+            color = (int(b * 255), int(g * 255), int(r * 255))
             self.lasers.append(Laser(x, y, angle, color))
 
 class Laser:
