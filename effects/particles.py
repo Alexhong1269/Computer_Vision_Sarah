@@ -1,5 +1,6 @@
 import random
 import cv2
+import math
 
 class Particle:
     def __init__(self, x, y):
@@ -54,3 +55,38 @@ class ParticleSystem:
     def draw(self, frame):
         for particle in self.partilces:
             particle.draw(frame)
+    
+    #laser effect
+    def emit_laster_burst(self, x, y, color, count=16):
+        for i in range(count):
+            angle = (2 * math.pi / count) * i
+            self.lasers.append(Laser(x, y, angle, color))
+
+class Laser:
+    def __init__(self, x, y, angle, color, length=40, speed=25):
+        self.x = x
+        self.y = y
+        self.angle = angle
+        self.color = color
+        self.length = length
+        self.speed = speed
+        self.lifespan = 15
+    
+    def update(self):
+        self.x += math.cos(self.angle) * self.speed
+        self.y += math.sin(self.angle) * self.speed
+        self.lifespan -= 1
+    
+    def is_alive(self):
+        return self.lifespan > 0
+    
+    def draw(self, frame):
+        end_x = self.x + math.cos(self.angle) * self.length
+        end_y = self.y + math.sin(self.angle) * self.length
+        cv2.line(
+            frame,
+            (int(self.x), int(self.y)),
+            (int(end_x), int(end_y)),
+            self.color, 3
+        )
+        
