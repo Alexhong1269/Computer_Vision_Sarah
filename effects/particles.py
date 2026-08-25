@@ -26,8 +26,8 @@ class Particle:
     #updating and applying the gravity to the particle
     def update(self):
         self.velocity_y += self.gravity
-        self.velocity_x += self.velocity_x
-        self.velocity_y += self.velocity_y
+        self.x += self.velocity_x
+        self.y += self.velocity_y
         self.lifespan -= 1
     
     def is_alive(self):
@@ -52,7 +52,7 @@ class ParticleSystem:
     def update(self):
         for particle in self.particles:
             particle.update()
-        self.particles = [p for p in self.partilces if p.is_alive()]
+        self.particles = [p for p in self.particles if p.is_alive()]
 
         for laser in self.lasers:
             laser.update()
@@ -66,7 +66,7 @@ class ParticleSystem:
             laser.draw(frame)
     
     #laser effect
-    def emit_laster_burst(self, x, y, count=16):
+    def emit_laser_burst(self, x, y, count=16):
         for i in range(count):
             angle = (2 * math.pi / count) * i
             hue = i / count
