@@ -85,11 +85,17 @@ class ParticleSystem:
         self.particles = []
         #all live lasers
         self.lasers = []
+        #particle for hearts
+        self.heart_particles = []
     
     #spawing partilces when the gesture is called
     def emit(self, x, y, color, count=30):
         for _ in range(count):
             self.particles.append(Particle(x, y, color))
+    
+    def emit_hearts(self, x, y, color, count=15):
+        for _ in range(count):
+            self.heart_particles.append(HeartParticles(x, y, color))
     
     #advancing the particle
     def update(self):
@@ -100,6 +106,10 @@ class ParticleSystem:
         for laser in self.lasers:
             laser.update()
         self.lasers = [l for l in self.lasers if l.is_alive()]
+
+        for heart in self.heart_particles:
+            heart.update()
+        self.heart_particles = [h for h in self.heart_particles if h.is_alive()]
     
     #drawing all the particles
     def draw(self, frame):
@@ -107,6 +117,8 @@ class ParticleSystem:
             particle.draw(frame)
         for laser in self.lasers:
             laser.draw(frame)
+        for heart in self.heart_particles:
+            heart.draw(frame)
     
     #laser effect
     def emit_laser_burst(self, x, y, count=16):
