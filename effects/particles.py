@@ -2,6 +2,49 @@ import random
 import cv2
 import math
 import colorsys
+import numpy as np
+
+def _heart_shape_points(scale=1.0, num_points=20):
+    points = []
+    for i in range(num_points):
+        t = (2 * math.pi / num_points) * i
+        hx = 16 * (math.sin(t) ** 3)
+        hy = 13 * math.cos(t) - 5 * math.cos(2 * t) - 2 * math.cos(3 * t) - math.cos(4 * t)
+        points.append((hx * scale, -hy * scale))
+    #return
+    return points
+
+class HeartParticles:
+    def __init__(self, x, y, color):
+        self.x = x
+        self.y = y
+        self.color = color
+
+        angle = random.uniform(0, 2 * math.pi)
+        speed = random.uniform(2, 5)
+        self.velocity_x = speed * math.cos(angle)
+        self.velocity_y = speed * math.sin(angle) - 2
+
+        self.gravity = 0.05
+        self.scale = random.uniform(.4, .9)
+        self.lifespan = random.randint(30, 50)
+    
+    def update(self):
+        self.velocity_y += self.gravity
+        self.x += self.velocity_x
+        self.y += self.velocity_y
+        self.lifespan -= 1
+    
+    def is_alive(self):
+        return self.lifespan > 0
+
+    def draw(self, frame):
+        offsets = _heart_shape_points(scale=self.scale)
+        polygon = np.array(
+            [[int(self.x + dx), int(self.y + dy)] for dx, dy in offsets],
+            dtype=np.int32
+        )
+        cv2.fillPoly(frame, [polygon], self.color)
 
 class Particle:
     def __init__(self, x, y, color):
