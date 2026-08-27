@@ -78,10 +78,15 @@ def main():
                     if confirmed == "Fist" and state_manager.can_trigger():
                         particle_system.emit_laser_burst(x, y)
                         state_manager.trigger()
-                    elif confirmed == "Peace Sign" and state_manager.can_trigger():
+                    elif confirmed == ("Peace Sign", "Thumbs up") and state_manager.can_trigger():
                         color = random.choice(CONFETTI_COLORS)
                         particle_system.emit(x, y, color, count=40)
                         state_manager.trigger()
+                    elif confirmed == "Pointing":
+                        index_tip = hand_landmarks.landmark[8]
+                        trail_x = int(index_tip.x * frame_width)
+                        trail_y = int(index_tip.y * frame_height)
+                        particle_system.emit(trail_x, trail_y, (0, 215, 255), count=2)
 
                     if confirmed:
                         cv2.putText(
