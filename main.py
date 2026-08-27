@@ -11,6 +11,10 @@ CONFETTI_COLORS = [
     (0, 255, 255), (255, 0, 255), (255, 255, 0)
 ]
 
+SILVER_COLORS = [
+    (255, 255, 255), (230, 230, 230), (211, 211, 211), (192, 192, 192)
+]
+
 LASER_COLOR = (0, 0, 255)
 HEART_COLOR = (147, 20, 255)
 
@@ -87,6 +91,10 @@ def main():
                         trail_x = int(index_tip.x * frame_width)
                         trail_y = int(index_tip.y * frame_height)
                         particle_system.emit(trail_x, trail_y, (0, 215, 255), count=2)
+                    elif confirmed == "Open Palm":
+                        color = random.choice(SILVER_COLORS)
+                        particle_system.emit(x, y, color, count=40)
+                        state_manager.trigger
 
                     if confirmed:
                         cv2.putText(
