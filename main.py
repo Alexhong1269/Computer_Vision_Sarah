@@ -61,7 +61,7 @@ def main():
                 mid_y = int(((left_wrist.y + right_wrist.y) / 2) * frame_height)
 
                 if confirmed_heart and heart_state_manager.can_trigger():
-                    particle_system.emit(mid_x,mid_y, HEART_COLOR, count=40)
+                    particle_system.emit_hearts(mid_x,mid_y, HEART_COLOR, count=15)
                     heart_state_manager.trigger()
                 cv2.putText(
                     frame, "Heart <3", (50, 50),
