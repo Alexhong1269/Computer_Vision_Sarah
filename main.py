@@ -33,6 +33,7 @@ def main():
     sound_manager = SoundManager()
     sound_manager.load("Heart", HEART_SONG)
     sound_manager.load("Fist", FIST_SONG)
+    sound_manager.load("Middle Finger", MIDDLE_FINGER_SONG)
 
     tracker = HandTracker(detection_confidence=0.5)
     cap = cv2.VideoCapture(0) # 0 = default webcam
@@ -96,6 +97,8 @@ def main():
                         state_manager.trigger()
                         sound_manager.play("Fist")
                     elif confirmed in ("Peace Sign", "Middle Finger") and state_manager.can_trigger():
+                        if confirmed == "Middle Finger":
+                            sound_manager.play("Middle Finger")
                         color = random.choice(CONFETTI_COLORS)
                         particle_system.emit(x, y, color, count=40)
                         state_manager.trigger()
@@ -106,7 +109,7 @@ def main():
                         particle_system.emit(trail_x, trail_y, (0, 215, 255), count=2)
                     elif confirmed == "Open Palm":
                         sound_manager.stop()
-                        if state_manager.trigger():
+                        if state_manager.can_trigger():
                             color = random.choice(SILVER_COLORS)
                             particle_system.emit(x, y, color, count=40)
                             state_manager.trigger()
