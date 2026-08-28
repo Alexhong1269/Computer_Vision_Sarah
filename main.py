@@ -9,6 +9,7 @@ from core.state_manager import GestureStateManager
 from effects.particles import ParticleSystem
 
 HEART_SONG = os.path.join("assets", "sounds", "Malcolm Todd, Omar Apollo - Bleed (Official Video) 4.mp3")
+FIST_SONG = os.path.join("assets", "sounds", "Porter Robinson - Cheerleader (Official Music Video).mp3")
 
 CONFETTI_COLORS = [
     (0,0,255), (0, 255, 0), (255,0, 0),
@@ -30,6 +31,7 @@ def main():
     heart_state_manager = GestureStateManager(debounce_frames=5, cooldown_seconds=1.0)
     sound_manager = SoundManager()
     sound_manager.load("Heart", HEART_SONG)
+    sound_manager.load("Fist", FIST_SONG)
 
     tracker = HandTracker(detection_confidence=0.5)
     cap = cv2.VideoCapture(0) # 0 = default webcam
@@ -89,6 +91,7 @@ def main():
                     if confirmed == "Fist" and state_manager.can_trigger():
                         particle_system.emit_laser_burst(x, y)
                         state_manager.trigger()
+                        sound_manager.play("Fist")
                     elif confirmed in ("Peace Sign", "Thumbs up") and state_manager.can_trigger():
                         color = random.choice(CONFETTI_COLORS)
                         particle_system.emit(x, y, color, count=40)
