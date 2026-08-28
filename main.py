@@ -8,7 +8,7 @@ from gestures.heart import HeartGesture
 from core.state_manager import GestureStateManager
 from effects.particles import ParticleSystem
 
-HEART_SONG = os.path.join("assets", "sounds", "Malcom Todd, Omar Apollo - Bleed (Official Video) 4.mp3")
+HEART_SONG = os.path.join("assets", "sounds", "Malcolm Todd, Omar Apollo - Bleed (Official Video) 4.mp3")
 
 CONFETTI_COLORS = [
     (0,0,255), (0, 255, 0), (255,0, 0),
