@@ -63,10 +63,10 @@ class SingleHandGestures:
         states = self.get_finger_states(hand_landmarks)
         return all(states.values())
 
-    def is_thumb_up(self, hand_landmarks):
+    def is_middle_finger(self, hand_landmarks):
         states = self.get_finger_states(hand_landmarks)
-        return states["thumb"] and not any(
-            states[f] for f in ["index", "middle", "ring", "pinky"]
+        return states["middle"] and states["thumb"] and not any(
+            states[f] for f in ["index", "ring", "pinky"]
         )
 
     def is_peace_sign(self, hand_landmarks):
@@ -87,8 +87,8 @@ class SingleHandGestures:
             return "Fist"
         if self.is_open_palm(hand_landmarks):
             return "Open Palm"
-        if self.is_thumb_up(hand_landmarks):
-            return "Thumbs up"
+        if self.is_middle_finger(hand_landmarks):
+            return "Middle Finger"
         if self.is_peace_sign(hand_landmarks):
             return "Peace Sign"
         if self.is_pointing(hand_landmarks):

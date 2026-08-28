@@ -10,6 +10,7 @@ from effects.particles import ParticleSystem
 
 HEART_SONG = os.path.join("assets", "sounds", "Malcolm Todd, Omar Apollo - Bleed (Official Video) 4.mp3")
 FIST_SONG = os.path.join("assets", "sounds", "Porter Robinson - Cheerleader (Official Music Video).mp3")
+MIDDLE_FINGER_SONG = os.path.join("assets", "sounds", "21 Savage, Offset, Metro Boomin - Ric Flair Drip (Official Music Video).mp3")
 
 CONFETTI_COLORS = [
     (0,0,255), (0, 255, 0), (255,0, 0),
@@ -82,6 +83,8 @@ def main():
 
                 for hand_landmarks in results.multi_hand_landmarks:
                     raw_gesture = gesture_detector.detect_gesture(hand_landmarks)
+                    #for testing
+                    #print(gesture_detector.get_finger_states(hand_landmarks))
                     confirmed = state_manager.update(raw_gesture)
 
                     wrist = hand_landmarks.landmark[0]
@@ -92,7 +95,7 @@ def main():
                         particle_system.emit_laser_burst(x, y)
                         state_manager.trigger()
                         sound_manager.play("Fist")
-                    elif confirmed in ("Peace Sign", "Thumbs up") and state_manager.can_trigger():
+                    elif confirmed in ("Peace Sign", "Middle Finger") and state_manager.can_trigger():
                         color = random.choice(CONFETTI_COLORS)
                         particle_system.emit(x, y, color, count=40)
                         state_manager.trigger()
