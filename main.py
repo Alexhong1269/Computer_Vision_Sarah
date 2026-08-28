@@ -1,10 +1,14 @@
 import cv2
 import random
+import os
+from effects.sound import SoundManager
 from core.hand_tracker import HandTracker
 from gestures.single_hand import SingleHandGestures
 from gestures.heart import HeartGesture
 from core.state_manager import GestureStateManager
 from effects.particles import ParticleSystem
+
+HEART_SONG = os.path.join("assets", "sounds", "Malcom Todd, Omar Apollo - Bleed (Official Video) 4.mp3")
 
 CONFETTI_COLORS = [
     (0,0,255), (0, 255, 0), (255,0, 0),
@@ -24,6 +28,8 @@ def main():
     particle_system = ParticleSystem()
     state_manager = GestureStateManager(debounce_frames=5, cooldown_seconds=1.0)
     heart_state_manager = GestureStateManager(debounce_frames=5, cooldown_seconds=1.0)
+    sound_manager = SoundManager()
+    sound_manager.load("Heart", HEART_SONG)
 
     tracker = HandTracker(detection_confidence=0.5)
     cap = cv2.VideoCapture(0) # 0 = default webcam
@@ -63,6 +69,7 @@ def main():
                 if confirmed_heart and heart_state_manager.can_trigger():
                     particle_system.emit_hearts(mid_x,mid_y, HEART_COLOR, count=15)
                     heart_state_manager.trigger()
+                    sound_manager.play("Heart")
                 cv2.putText(
                     frame, "Heart <3", (50, 50),
                     cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 0, 255), 3
