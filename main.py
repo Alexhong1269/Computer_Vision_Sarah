@@ -102,9 +102,11 @@ def main():
                         trail_y = int(index_tip.y * frame_height)
                         particle_system.emit(trail_x, trail_y, (0, 215, 255), count=2)
                     elif confirmed == "Open Palm":
-                        color = random.choice(SILVER_COLORS)
-                        particle_system.emit(x, y, color, count=40)
-                        state_manager.trigger()
+                        sound_manager.stop()
+                        if state_manager.trigger():
+                            color = random.choice(SILVER_COLORS)
+                            particle_system.emit(x, y, color, count=40)
+                            state_manager.trigger()
 
                     if confirmed:
                         cv2.putText(
