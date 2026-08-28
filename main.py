@@ -82,7 +82,7 @@ def main():
                     if confirmed == "Fist" and state_manager.can_trigger():
                         particle_system.emit_laser_burst(x, y)
                         state_manager.trigger()
-                    elif confirmed == ("Peace Sign", "Thumbs up") and state_manager.can_trigger():
+                    elif confirmed in ("Peace Sign", "Thumbs up") and state_manager.can_trigger():
                         color = random.choice(CONFETTI_COLORS)
                         particle_system.emit(x, y, color, count=40)
                         state_manager.trigger()
@@ -94,7 +94,7 @@ def main():
                     elif confirmed == "Open Palm":
                         color = random.choice(SILVER_COLORS)
                         particle_system.emit(x, y, color, count=40)
-                        state_manager.trigger
+                        state_manager.trigger()
 
                     if confirmed:
                         cv2.putText(
