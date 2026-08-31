@@ -102,7 +102,7 @@ def main():
                         if confirmed == "Middle Finger":
                             sound_manager.play("Middle Finger")
                             #text
-                            banner_manager.show("Middle Finger", 50, 50, (0, 255, 255))
+                            banner_manager.show("Middle Finger", 50, frame_height // 2, (220, 160, 201))
                         color = random.choice(CONFETTI_COLORS)
                         particle_system.emit(x, y, color, count=40)
                         state_manager.trigger()
