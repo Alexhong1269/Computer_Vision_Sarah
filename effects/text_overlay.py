@@ -2,7 +2,7 @@ import cv2
 
 class Banner:
     def __init__(self, text, target_x, target_y, color, font_scale=1.5, thickness=3, slide_speed=25, hold_frames=45):
-        self.text = text
+        self.lines = text.split("/n")
         self.target_x = target_x
         self.target_y = target_y
         self.color = color
@@ -10,12 +10,13 @@ class Banner:
         self.thickness = thickness
         self.slide_speed = slide_speed
         self.hold_frames = hold_frames
+        self.line_height = int(45 * font_scale)
 
-        (text_width, _ ), _ = cv2.getTextSize(
-            text, cv2.FONT_HERSHEY_SIMPLEX, font_scale, thickness
-        )
+        line_widths = [
+            cv2.getTextSize(line, cv2.FONT_HERSHEY_SIMPLEX, font_scale, thickness)[0][0]
+        ]
 
-        self.x = -text_width
+        self.x = -max(line_widths)
         self.arrived = False
         self.hold_counter = 0
 
@@ -32,10 +33,12 @@ class Banner:
         return not (self.arrived and self.hold_counter >= self.hold_frames)
 
     def draw(self, frame):
-        cv2.putText(
-            frame, self.text, (int(self.x), self.target_y),
-            cv2.FONT_HERSHEY_SIMPLEX, self.font_scale, self.color, self.thickness
-        )
+        for i, line in enumerate(self.lines):
+            line_y = self.target_y + i * self.line_height
+            cv2.putText(
+                frame, line, (int(self.x), line_y),
+                cv2.FONT_HERSHEY_SIMPLEX, self.font_scale, self.color, self.thickness
+            )
     
 class BannerManager:
     def __init__(self):
