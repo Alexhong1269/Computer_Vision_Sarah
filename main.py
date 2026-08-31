@@ -7,6 +7,7 @@ from gestures.single_hand import SingleHandGestures
 from gestures.heart import HeartGesture
 from core.state_manager import GestureStateManager
 from effects.particles import ParticleSystem
+from effects.text_overlay import BannerManager
 
 HEART_SONG = os.path.join("assets", "sounds", "Malcolm Todd, Omar Apollo - Bleed (Official Video) 4.mp3")
 FIST_SONG = os.path.join("assets", "sounds", "Porter Robinson - Cheerleader (Official Music Video).mp3")
@@ -31,6 +32,7 @@ def main():
     state_manager = GestureStateManager(debounce_frames=5, cooldown_seconds=1.0)
     heart_state_manager = GestureStateManager(debounce_frames=5, cooldown_seconds=1.0)
     sound_manager = SoundManager()
+    banner_manager = BannerManager()
     sound_manager.load("Heart", HEART_SONG)
     sound_manager.load("Fist", FIST_SONG)
     sound_manager.load("Middle Finger", MIDDLE_FINGER_SONG)
@@ -99,6 +101,8 @@ def main():
                     elif confirmed in ("Peace Sign", "Middle Finger") and state_manager.can_trigger():
                         if confirmed == "Middle Finger":
                             sound_manager.play("Middle Finger")
+                            #text
+                            banner_manager.show("Middle Finger", 50, 50, (0, 255, 255))
                         color = random.choice(CONFETTI_COLORS)
                         particle_system.emit(x, y, color, count=40)
                         state_manager.trigger()
@@ -122,6 +126,8 @@ def main():
 
         particle_system.update()
         particle_system.draw(frame)
+        banner_manager.update()
+        banner_manager.draw(frame)
         
         cv2.imshow("Hand Tracker Test", frame)
 
