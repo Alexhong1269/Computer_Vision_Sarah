@@ -37,5 +37,21 @@ class Banner:
             cv2.FONT_HERSHEY_SIMPLEX, self.font_scale, self.color, self.thickness
         )
     
+class BannerManager:
+    def __init__(self):
+        self.banners = []
+    
+    def show(self, text, target_x, target_y, color=(255, 255, 255)):
+        self.banners.append(Banner(text, target_x, target_y, color))
+    
+    def update(self):
+        for banner in self.banners:
+            banner.update()
+        self.banners = [b for b in self.banners if b.is_alive()]
+    
+    def draw(self, frame):
+        for banner in self.banners:
+            banner.draw(frame)
+        
 
         
