@@ -14,6 +14,7 @@ class Banner:
 
         line_widths = [
             cv2.getTextSize(line, cv2.FONT_HERSHEY_SIMPLEX, font_scale, thickness)[0][0]
+            for line in self.lines
         ]
 
         self.x = -max(line_widths)
