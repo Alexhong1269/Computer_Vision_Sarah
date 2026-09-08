@@ -78,7 +78,7 @@ def main():
                     sound_manager.play("Heart")
                     banner_manager.show("Heart", 50, frame_height // 2, HEART_COLOR)
                 cv2.putText(
-                    frame, "Heart <3", (50, 50),
+                    frame, "I Love you Sarah! /n May I be /nyour Boyfriend <3", (50, 50),
                     cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 0, 255), 3
                 )
         
