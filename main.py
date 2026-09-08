@@ -99,6 +99,8 @@ def main():
                         particle_system.emit_laser_burst(x, y)
                         state_manager.trigger()
                         sound_manager.play("Fist")
+                        #text for the fist
+                        banner_manager.show("I Just want to have fun!", 50, frame_height // 2, (220, 160, 201))
                     elif confirmed in ("Peace Sign", "Middle Finger") and state_manager.can_trigger():
                         if confirmed == "Middle Finger":
                             sound_manager.play("Middle Finger")
