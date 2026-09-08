@@ -76,9 +76,9 @@ def main():
                     particle_system.emit_hearts(mid_x,mid_y, HEART_COLOR, count=15)
                     heart_state_manager.trigger()
                     sound_manager.play("Heart")
-                    banner_manager.show("Heart", 50, frame_height // 2, HEART_COLOR)
+                    banner_manager.show("I Love you Sarah! /n May I be /nyour Boyfriend <3", 50, frame_height // 2, HEART_COLOR)
                 cv2.putText(
-                    frame, "I Love you Sarah! /n May I be /nyour Boyfriend <3", (50, 50),
+                    frame, "Heart <3", (50, 50),
                     cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 0, 255), 3
                 )
         
